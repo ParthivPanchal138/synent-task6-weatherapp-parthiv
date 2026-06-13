@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkyCheck — Live Weather Lookup</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- HEADER -->
+    <header class="top-bar">
+      <div class="brand">
+        <span class="brand-mark">☁</span>
+        <span class="brand-name">SkyCheck</span>
+      </div>
+      <p class="tagline">Type a city, get the weather. That's it.</p>
+    </header>
+
+    <!-- SEARCH -->
+    <section class="search-area">
+      <form id="searchForm" class="search-form" autocomplete="off">
+        <input
+          type="text"
+          id="cityInput"
+          class="search-input"
+          placeholder="Try Mumbai, London, Tokyo..."
+          aria-label="City name"
+        />
+        <button type="submit" class="search-btn">
+          Check weather
+        </button>
+      </form>
+
+      <!-- Quick city chips -->
+      <div class="quick-cities">
+        <span class="quick-label">Quick picks:</span>
+        <button class="city-chip" data-city="Vadodara">Vadodara</button>
+        <button class="city-chip" data-city="Mumbai">Mumbai</button>
+        <button class="city-chip" data-city="Delhi">Delhi</button>
+        <button class="city-chip" data-city="London">London</button>
+        <button class="city-chip" data-city="New York">New York</button>
+      </div>
+    </section>
+
+    <!-- RESULT AREA -->
+    <main class="result-area">
+
+      <!-- Loading state -->
+      <div id="loadingState" class="state-card loading-card hidden">
+        <div class="spinner"></div>
+        <p>Fetching weather data...</p>
+      </div>
+
+      <!-- Error state -->
+      <div id="errorState" class="state-card error-card hidden">
+        <span class="error-icon">⚠</span>
+        <h3 id="errorTitle">Something went wrong</h3>
+        <p id="errorMessage">We couldn't find that city. Try checking the spelling.</p>
+      </div>
+
+      <!-- Empty / first-load state -->
+      <div id="emptyState" class="state-card empty-card">
+        <span class="empty-icon">📍</span>
+        <h3>No city selected yet</h3>
+        <p>Search for any city above to see live weather conditions.</p>
+      </div>
+
+      <!-- Weather result card -->
+      <div id="weatherCard" class="weather-card hidden">
+
+        <div class="weather-top">
+          <div class="weather-location">
+            <h2 id="cityName">--</h2>
+            <p id="cityRegion">--</p>
+          </div>
+          <div class="weather-icon" id="weatherIcon">☀</div>
+        </div>
+
+        <div class="weather-temp-row">
+          <span class="weather-temp" id="weatherTemp">--°</span>
+          <span class="weather-condition" id="weatherCondition">--</span>
+        </div>
+
+        <div class="weather-grid">
+          <div class="weather-stat">
+            <span class="stat-label">Feels like</span>
+            <span class="stat-value" id="feelsLike">--°</span>
+          </div>
+          <div class="weather-stat">
+            <span class="stat-label">Humidity</span>
+            <span class="stat-value" id="humidity">--%</span>
+          </div>
+          <div class="weather-stat">
+            <span class="stat-label">Wind speed</span>
+            <span class="stat-value" id="windSpeed">-- km/h</span>
+          </div>
+          <div class="weather-stat">
+            <span class="stat-label">Updated</span>
+            <span class="stat-value" id="updatedTime">--</span>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bottom-bar">
+      <p>Weather data from <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a> · Location lookup from <a href="https://geocoding-api.open-meteo.com" target="_blank" rel="noopener">Open-Meteo Geocoding</a></p>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
