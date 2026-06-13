@@ -1,11 +1,4 @@
-/* ============================================
-   SkyCheck — Weather Lookup App
-   Uses Open-Meteo (no API key required)
-   - Geocoding API: turns a city name into coordinates
-   - Forecast API: turns coordinates into weather data
-============================================ */
 
-// Grab all the elements we need to update
 const searchForm   = document.getElementById('searchForm');
 const cityInput    = document.getElementById('cityInput');
 const cityChips    = document.querySelectorAll('.city-chip');
@@ -28,8 +21,6 @@ const humidity     = document.getElementById('humidity');
 const windSpeed    = document.getElementById('windSpeed');
 const updatedTime  = document.getElementById('updatedTime');
 
-// Open-Meteo weather codes mapped to a simple description + emoji
-// Reference: https://open-meteo.com/en/docs (WMO Weather interpretation codes)
 const weatherCodeMap = {
   0:  { label: 'Clear sky',            icon: '☀' },
   1:  { label: 'Mostly clear',         icon: '🌤' },
@@ -53,11 +44,6 @@ const weatherCodeMap = {
   96: { label: 'Thunderstorm + hail',  icon: '⛈' },
   99: { label: 'Severe thunderstorm',  icon: '⛈' },
 };
-
-/**
- * Shows only one of: loading / error / empty / weather card
- * by hiding the other three.
- */
 function showOnly(panel) {
   loadingState.classList.add('hidden');
   errorState.classList.add('hidden');
@@ -66,11 +52,6 @@ function showOnly(panel) {
 
   panel.classList.remove('hidden');
 }
-
-/**
- * Step 1 — turn a city name into latitude/longitude
- * using Open-Meteo's free geocoding endpoint.
- */
 async function getCityCoordinates(city) {
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`;
 
@@ -95,11 +76,6 @@ async function getCityCoordinates(city) {
     region: [place.admin1, place.country].filter(Boolean).join(', '),
   };
 }
-
-/**
- * Step 2 — fetch current weather for a given lat/lon
- * using Open-Meteo's free forecast endpoint.
- */
 async function getWeatherForCoordinates(latitude, longitude) {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m`;
 
@@ -118,9 +94,6 @@ async function getWeatherForCoordinates(latitude, longitude) {
   return data.current;
 }
 
-/**
- * Fills the weather card with data and shows it.
- */
 function renderWeather(place, current) {
   const code = current.weather_code;
   const conditionInfo = weatherCodeMap[code] || { label: 'Unknown', icon: '🌡' };
@@ -142,9 +115,6 @@ function renderWeather(place, current) {
   showOnly(weatherCard);
 }
 
-/**
- * Shows a friendly error message based on what went wrong.
- */
 function renderError(error) {
   if (error.message === 'CITY_NOT_FOUND') {
     errorTitle.textContent = 'City not found';
@@ -157,10 +127,6 @@ function renderError(error) {
   showOnly(errorState);
 }
 
-/**
- * Main function — runs the full search flow:
- * loading state -> geocode -> weather -> render
- */
 async function searchWeather(city) {
   const trimmedCity = city.trim();
 
@@ -179,8 +145,6 @@ async function searchWeather(city) {
     renderError(error);
   }
 }
-
-// Handle the search form submit
 searchForm.addEventListener('submit', (event) => {
   event.preventDefault();
   searchWeather(cityInput.value);
@@ -194,8 +158,6 @@ cityChips.forEach((chip) => {
     searchWeather(city);
   });
 });
-
-// Load a default city on first visit so the page isn't empty
 window.addEventListener('DOMContentLoaded', () => {
   cityInput.value = 'Vadodara';
   searchWeather('Vadodara');
